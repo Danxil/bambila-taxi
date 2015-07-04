@@ -1,0 +1,77 @@
+{
+  "data": {
+    "user": [
+      {
+        "name": "John Smith",
+        "createdAt": "2015-07-04T21:23:14.546Z",
+        "updatedAt": "2015-07-04T21:23:14.546Z",
+        "id": 1
+      },
+      {
+        "name": "John Smith",
+        "pass": "efe",
+        "createdAt": "2015-07-04T21:24:36.930Z",
+        "updatedAt": "2015-07-04T21:24:36.930Z",
+        "id": 2
+      },
+      {
+        "333": "efe",
+        "name": "John Smith",
+        "createdAt": "2015-07-04T21:24:40.557Z",
+        "updatedAt": "2015-07-04T21:24:40.557Z",
+        "id": 3
+      },
+      {
+        "333": "efe",
+        "name": "John Smith",
+        "createdAt": "2015-07-04T21:24:44.115Z",
+        "updatedAt": "2015-07-04T21:24:44.115Z",
+        "id": 4
+      },
+      {
+        "333": "efe",
+        "name": "John Smith",
+        "createdAt": "2015-07-04T21:24:46.407Z",
+        "updatedAt": "2015-07-04T21:24:46.407Z",
+        "id": 5
+      },
+      {
+        "222": "efe",
+        "name": "John Smith",
+        "createdAt": "2015-07-04T21:24:49.899Z",
+        "updatedAt": "2015-07-04T21:24:49.899Z",
+        "id": 6
+      }
+    ]
+  },
+  "schema": {
+    "user": {
+      "email": {
+        "type": "string"
+      },
+      "password": {
+        "type": "string"
+      },
+      "phone": {
+        "type": "string"
+      },
+      "id": {
+        "type": "integer",
+        "autoIncrement": true,
+        "primaryKey": true,
+        "unique": true
+      },
+      "createdAt": {
+        "type": "datetime"
+      },
+      "updatedAt": {
+        "type": "datetime"
+      }
+    }
+  },
+  "counters": {
+    "user": {
+      "id": 6
+    }
+  }
+}
