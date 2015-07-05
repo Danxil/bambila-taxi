@@ -7,7 +7,8 @@
 
 module.exports = {
 	
-  signup: function (req, res) {
+  signup: function (req, res, next) {
+
     return res.json({
       todo: 'signup() is not implemented yet!'
     });
