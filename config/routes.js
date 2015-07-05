@@ -8,7 +8,11 @@ module.exports.routes = {
     view: "homepage"
   },
 
-  "/signup": {
+  "get /signup": {
+    controller: "User",
+    action: "signup"
+  },
+  "post /signup": {
     controller: "User",
     action: "signup"
   }

@@ -6,15 +6,15 @@
  */
 
 module.exports = {
-	
-  signup: function (req, res, next) {
-    console.error("required", req);
-    //email (required)
-    //password (required)
-    //phone (required)
-    return res.json({
-      todo: 'signup() is not implemented yet!'
-    });
-  }
+
+    signup: function (req, res) {
+        //console.error("required", req.json);
+        //email (required)
+        //password (required)
+        //phone (required)
+        return res.json({
+            todo: 'signup() is not implemented yet!'
+        });
+    }
 };
 
