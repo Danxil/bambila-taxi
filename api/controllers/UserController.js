@@ -29,7 +29,6 @@ module.exports = {
                             });
                         }
                         else {
-                            console.log("attr.message2", attr)
                             return res.status(400).json({
                                 email: [attr.message]
                             });
@@ -40,7 +39,7 @@ module.exports = {
 
                         if ( attr.rule === 'unique' ){
                             return res.status(400).json({
-                                detail:  attr.message
+                                detail: attr.message
                             });
                         }
                         else {
@@ -49,8 +48,14 @@ module.exports = {
                             });
                         }
                     }
-                    else {
-                        console.log("attr.message9", attr)
+                    else if( attr.hasOwnProperty("password") ){
+                        attr = attr.password[0];
+
+                        if ( attr.rule === 'required' ){
+                            return res.status(400).json({
+                                password: [attr.message]
+                            });
+                        }
                     }
                 }
             });
