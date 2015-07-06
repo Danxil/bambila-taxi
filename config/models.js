@@ -17,7 +17,7 @@ module.exports.models = {
   * connections (see `config/connections.js`)                                *
   *                                                                          *
   ***************************************************************************/
-  // connection: 'localDiskDb',
+   connection: 'node_rideshare',//postgres
 
   /***************************************************************************
   *                                                                          *
@@ -27,7 +27,7 @@ module.exports.models = {
   * See http://sailsjs.org/#!/documentation/concepts/ORM/model-settings.html  *
   *                                                                          *
   ***************************************************************************/
-   migrate: 'safe'
-   //migrate: 'alter'
+   migrate: 'alter'
+   //migrate: 'safe'
 
 };

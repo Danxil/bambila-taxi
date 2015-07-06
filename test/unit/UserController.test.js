@@ -1,41 +1,34 @@
+
 require("sails-test-helper");
+var request = require('request');
 
-describe("UserController", function() {
-    describe("GET signup", function() {
-        it("should be successful", function(done) {
-            request.get("/signup")
-                .expect(200)
-                .end(done);
-        });
-    });
-    describe("POST signup", function() {
-        it("should be successful", function(done) {
+describe('UsersController', function() {
 
-            //request.post("/signup")
-            //    .expect(200)
-            //    .end(done);
-            request.post({
-                "url": "/signup",
-                "method": "POST",
-                "json": {"custom": "test data will be required!"}
-            }, function(){
-                console.log("34234ffd")
-                done()
+    describe('#login()', function() {
+        it('should success POST /signup', function (done) {
+            var data = {
+                email: "testuser@eff.re",              //(required)
+                password: "test3333pass",         //(required)
+                phone: "380987523444"   //(required)
+            };
+            request({
+                url: "http://localhost:1337/signup",
+                method: "post",
+                json: data
+            },function( err, res, body){
+                if(!err){
+
+                    console.log("tt", body);
+                    done();
+                }
+                else {
+                    console.log("error", err);
+                    done();
+                }
             });
-                //.expect(200)
-                //.end(done);
-            //
-            //request({
-            //    url: "/signup",
-            //    method: "POST",
-            //    json: {"custom": "test data will be required!"}
-            //}).expect(200)
-            //    .end(done);
-
-
-
-
 
         });
     });
+
 });
+
