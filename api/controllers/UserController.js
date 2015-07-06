@@ -8,45 +8,84 @@
 module.exports = {
 
     signup: function (req, res) {
-        console.error("signup User",User)
+        User.create( req.body )
+            .exec( function( err, user ) {
+                if( !err ){
+                    console.error("!!111!!user signup", user);
+                    return res.status(201).json({
+                        email: user.email,
+                        phone: user.phone,
+                        id: user.id
+                    });
+                }
+                else {
+                    var attr = err.Errors;//sails-hook-validation
+                    if ( attr.hasOwnProperty("email") ){
+                        attr = attr.email[0];
 
-        console.error("signup contr",req.body)
+                        if ( attr.rule === 'unique' ){
+                            return res.status(400).json({
+                                detail: attr.message
+                            });
+                        }
+                        else {
+                            console.log("attr.message2", attr)
+                            return res.status(400).json({
+                                email: [attr.message]
+                            });
+                        }
+                    }
+                    else if( attr.hasOwnProperty("phone") ){
+                        attr = attr.phone[0];
 
-        User.create(req.body)
-            .done(function(err, user) {
-                res.end(JSON.stringify(user));
-            })
-            .error(function(err, user) {
-                res.end(JSON.stringify(err));
+                        if ( attr.rule === 'unique' ){
+                            return res.status(400).json({
+                                detail:  attr.message
+                            });
+                        }
+                        else {
+                            return res.status(400).json({
+                                phone: [attr.message]
+                            });
+                        }
+                    }
+                    else {
+                        console.log("attr.message9", attr)
+                    }
+                }
             });
-        return res.json({
-            todo: 'signup() is not implemented yet!'
-        });
     },
-    create: function (req, res) {
-        User.create(req.body).done(function(err, user) {
-            res.end(JSON.stringify(user));
-        });
-    },
-
-    destroy: function(req, res) {
-        User.destroy(req.body).done(function(err) {
-            if(err) {
-                res.end("Error: "+err);
-            } else {
-                res.end("User destroyed.");
-            }
-        });
-    },
-
-    index: function(req, res) {
-        console.log("Looking for index.ejs");
-        User.find(function(err, users) {
-            console.log(JSON.stringify(users));
-            res.view({
-                users: users
-            });
-        });
+    login: function (req, res) {
+        //return res.json({
+        //    todo: 'login() is not implemented yet!'
+        //});
     }
+    //create: function (req, res) {
+    //    User.create(req.body).exec(function(err, user) {
+    //        console.error("efg444", err)
+    //        console.error("efg444", user)
+    //        res.end(JSON.stringify(user));
+    //    });
+    //},
+    //
+    //destroy: function(req, res) {
+    //    User.destroy(req.body).done(function(err) {
+    //        if(err) {
+    //            res.end("Error: "+err);
+    //        } else {
+    //            res.end("User destroyed.");
+    //        }
+    //    });
+    //},
+    //
+    //index: function(req, res) {
+    //    console.log("Looking for index.ejs");
+    //    User.find(function(err, users) {
+    //        console.log(JSON.stringify(users));
+    //        res.view({
+    //            users: users
+    //        });
+    //    });
+    //}
 };
 
