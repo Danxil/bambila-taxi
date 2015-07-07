@@ -2,21 +2,12 @@
  */
 
 module.exports.routes = {
-
-
-  "/": {
-    view: "homepage"
-  },
-
-  "get /signup": {
+  "post /api/signup": {
     controller: "User",
     action: "signup"
   },
-  "post /signup": {
+  "post /api/login": {
     controller: "User",
-    action: "signup"
+    action: "login"
   }
-
-
-
 };
