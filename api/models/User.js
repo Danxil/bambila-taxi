@@ -1,4 +1,3 @@
-var bcrypt = require("bcrypt");
 module.exports = {
     adapter: 'node_rideshare',
     tableName: 'users',
@@ -17,6 +16,10 @@ module.exports = {
         password: {
             type: 'string',
             required: true
+        },
+        token: {
+            type: 'string',
+            required: true
         }
     },
     validationMessages: { //hand for i18n & l10n
@@ -25,13 +28,13 @@ module.exports = {
             required: "This field is required.",
             unique: "User with this Email address already exists."
         },
-        phone: {
-            required: "This field is required.",
-            //telephone : "This value does not match the required pattern.",
-            unique: "User with this phone number already exists."
-        },
         password: {
             required: "This field is required."
+        },
+        phone: {
+            required: "This field is required.",
+            //phone : "This value does not match the required pattern.",//todo regexp
+            unique: "User with this phone number already exists."
         }
     }
 };
