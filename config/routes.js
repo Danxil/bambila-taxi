@@ -7,10 +7,10 @@ module.exports.routes = {
   },
   "post /api/signup": {
     controller: "User",
-    action: "signup"
+    action: "create"
   },
   "post /api/login": {
     controller: "User",
-    action: "login"
+    action: "find"
   }
 };

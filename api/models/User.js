@@ -1,6 +1,7 @@
 module.exports = {
     adapter: 'node_rideshare',
     tableName: 'users',
+
     schema: true,
     attributes: {
         email: {
@@ -35,6 +36,10 @@ module.exports = {
             required: "This field is required.",
             //phone : "This value does not match the required pattern.",//todo regexp
             unique: "User with this phone number already exists."
+        },
+        token: {
+            required: "This field is required.",
+            unique: "User with this token already exists."
         }
     }
 };
