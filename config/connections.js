@@ -15,7 +15,7 @@ module.exports.connections = {
 
     node_rideshare: {
         adapter: 'sails-postgresql',
-        host: 'bambillataxi.com',
+        host: 'bambilla.club',
         user: 'rideshare',
         database: 'node_rideshare',
         password: 'sD4oFYeyWxF0zMj8Vmr2HtOA'

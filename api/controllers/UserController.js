@@ -6,135 +6,193 @@
  */
 var utils = require("../../utils/utils");
 var token = require('hat');
+var bcrypt = require('bcrypt');
 
 module.exports = {
-    create: function (req, res) {
+    create: function ( req, res ) {
         var data = req.body;
-        if ( utils.isEmptyObject(data) ) {//true === empty
-            return res.status(400).json({
-                email: "This field is required.",
-                phone: "This field is required.",
-                password: "This field is required."
-            });
-        }
-        else {
-            //generate token
-            data.token = token();
+        var pass = data.password;
 
-            User
-                .create( data )
-                .exec( function ( err, user ) {
-                    if ( !err ) {
-                        return res.status( 201 ).json({
-                            email: user.email,
-                            phone: user.phone,
-                            id: user.id
-                        });
-                    }
-                    else {
-                        userCreateValidate( err, function ( err, result ) {
-                            return res.status(400).json( result );
-                        })
-                    }
+        passwordHash( pass, function( err, hash ){
+
+            //passwordHash
+            data.password = hash;
+
+            if ( utils.isEmptyObject(data) ) {//true === empty
+                return res.status(400).json({
+                    email: "This field is required.",
+                    phone: "This field is required.",
+                    password: "This field is required."
                 });
-        }
+            }
+            else {
+                User
+                    .create( data )
+                    .exec( function ( err, user ) {
+                        if ( !err ) {
+                            return res.status( 201 ).json({
+                                email: user.email,
+                                phone: user.phone,
+                                id: user.id
+                            });
+                        }
+                        else {
+                            userCreateValidateMsg( err, function ( err, result ) {
+                                return res.status(400).json( result );
+                            })
+                        }
+                    });
+            }
+        });
     },
-    find: function (req, res) {
+    find: function ( req, res ) {
 
         var data = req.body;
 
-        if( !utils.isEmptyObject( data ) ){
-            User
-                .findOne( data )
-                .exec( function( err, model ){
-
-                    if ( !err && model ) {
-                        console.error("model", model)
-                        res.status( 200 ).json({
-                            id: model.id,
-                            token: model.token
-                        });//200
-                    }
-                    else {
-                        userFindValidate( err, model, function ( status, result ) {
-                            if( !status ){
-                                return res.status( 400 ).json( result );//400
-                            }
-                            else {
-                                return res.status( status ).json( result );//401
-                            }
-                        });
-                    }
-                });
-        }
-        else {
+        if( (!data.hasOwnProperty("email") || data.email === "" )
+            && ( !data.hasOwnProperty("password") || data.password === "" ) ){
             return res.status( 400 ).json({
-                "password": [
-                    "This field is required."
-                ],
                 "email": [
                     "This field is required."
+                ],
+                "password": [
+                    "This field is required."
                 ]
-            });//400
+            });
         }
+        if( !data.hasOwnProperty("email") || data.email === "" ){
+            return res.status( 400 ).json({ "email": [
+                "This field is required."
+            ]});
+        }
+        if( !data.hasOwnProperty("password") || data.password === "" ){
+            return res.status( 400 ).json({ "password": [
+                "This field is required."
+            ]});
+        }
+
+        var pass = data.password;
+        delete data.password;
+
+        async.waterfall([
+            function( callback ) {
+                User.findOne( data )
+                    .exec( function( err, model ){
+                        if( model ){
+                            callback( err, model );
+                        }
+                        else {
+                            callback( err, false );
+                        }
+                    });
+            },
+            function( model, callback) {
+                passwordCompare( pass, model.password, function( err, compareStatus ) {//pass equal passHache
+                    var errMsg = err;
+                    callback( null, model, compareStatus, errMsg );
+                });
+            },
+            function( model, compareStatus, errMsg, callback ){
+                if ( model && compareStatus && !errMsg ) {
+                    data.token = token();
+
+                    User
+                        .update( model.id, data )
+                        .exec( function( err, models ) {
+                            callback( null, 200, {///////200 ok
+                                id: models[0].id,
+                                token: models[0].token
+                            });
+                        });
+                }
+                else {
+                    userFindValidateMsg( errMsg, model, function ( status, result ) {
+                        callback( null, status, result );//////400 || 401
+                    });
+                }
+            }
+        ], function ( err, status, result) {
+            if( !err ){
+                res.status( status ).json( result );//200 || 400 || 401
+            }
+            else {
+                res.status( 401 ).json({
+                    "detail": "Authentication credentials were not provided."
+                });//200 || 400 || 401
+            }
+        });
     }
 };
 
-function userFindValidate( err, model, callback ){
+function passwordHash( pass, callback ){//create hash
+    bcrypt.genSalt(10, function( err, salt ) {
+        bcrypt.hash( pass, salt, function( err, hash ) {
+            callback( null, hash );
+        });
+    });
+}
 
+function passwordCompare( pass, hash, callback ){//compare password
+    bcrypt.compare( pass, hash, function( err, status ) {
+        callback( null, status );
+    });
+}
 
+function userFindValidateMsg( err, model, callback ){
     if ( !model ){//un
-        console.log("userFindValidate err", model);
         callback( 401, {
             "detail": "Authentication credentials were not provided."
         });
     }
     else {
-
-        var attr = err.Errors;//sails-hook-validation
-        console.log("userFindValidate", attr);
-
-
-        if ( attr.hasOwnProperty("email") && attr.hasOwnProperty("password") ){
-            callback( null, {
-                email: [attr.email[0].message],
-                password: [attr.email[0].password]
-            });
-        }
-        else if ( attr.hasOwnProperty("password") ){
-            callback( null, {
-                password: [attr.password[0].password]
-            });
-        }
-        else if ( attr.hasOwnProperty("email") ){
-            attr = err.Errors;
-            attr = attr.email[0];
-
-            if ( attr.rule === 'unique' ){
-                callback( 401, {
-                    detail: attr.message
+        var attr = err;
+        if ( err && err.hasOwnProperty("Errors") ){//sails-hook-validation
+            if ( attr.hasOwnProperty("email") && attr.hasOwnProperty("password") ){
+                callback( 400, {
+                    email: [attr.email[0].message],
+                    password: [attr.email[0].password]
                 });
             }
-            else {
-                callback( null, {
-                    email: [attr.message]
+            else if ( attr.hasOwnProperty("password") ){
+                callback( 400, {
+                    password: [attr.password[0].password]
                 });
+            }
+            else if ( attr.hasOwnProperty("email") ){
+                attr = err.Errors;
+                attr = attr.email[0];
+
+                if ( attr.rule === 'unique' ){
+                    callback( 401, {
+                        detail: attr.message
+                    });
+                }
+                else {
+                    callback( 400, {
+                        email: [attr.message]
+                    });
+                }
+            }
+            else if( attr.hasOwnProperty("password") ){
+                attr = err.Errors;
+                attr = attr.password[0];
+
+                if ( attr.rule === 'required' ){
+                    callback( 400, {
+                        password: [attr.message]
+                    });
+                }
             }
         }
-        else if( attr.hasOwnProperty("password") ){
-            attr = err.Errors;
-            attr = attr.password[0];
-
-            if ( attr.rule === 'required' ){
-                callback( null, {
-                    password: [attr.message]
-                });
-            }
+        else {
+            callback( 401, {
+                "detail": "Authentication credentials were not provided."
+            });//401
         }
     }
 }
 
-function userCreateValidate( err, callback ){
+function userCreateValidateMsg( err, callback ){
     var attr = err.Errors;//sails-hook-validation
     if ( attr.hasOwnProperty("email") && attr.hasOwnProperty("phone") && attr.hasOwnProperty("password") ){
         callback( null, {

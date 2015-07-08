@@ -8,23 +8,28 @@ var loginURL = "http://localhost:1337/api/login";
 describe('UsersController', function() {
 
     describe('#signup()', function() {
-        //it('should success POST /api/signup user created 201', function (done) {
-        //    var data = {
-        //        email: "332fg4ddwe3434s4er@ef5f.re",
-        //        password: "te3d43s433d4fggfdst3333pass",
-        //        phone: "38032344334334d45523444"
-        //    };
-        //    request({
-        //        url: "http://localhost:1337/api/signup",
-        //        method: "post",
-        //        json: data
-        //    }, function( error, res, body){
-        //        assert.equal( body.hasOwnProperty("email"), true );//for new user
-        //        assert.equal( body.hasOwnProperty("id"), true );
-        //        assert.equal( body.hasOwnProperty("phone"), true );
-        //        done();
-        //    });
-        //});
+        it('should success POST /api/signup user exist', function (done) {
+            var data = {
+                email: "bbbb@bbbb.bbbb",
+                password: "bbbb",
+                phone: "2222"
+            };
+            request({
+                url: "http://localhost:1337/api/signup",
+                method: "post",
+                json: data
+            }, function( error, res, body){
+                console.log(1, body)
+                body = JSON.stringify(body);
+                var msg = JSON.stringify({ detail: 'User with this Email address already exists.' });
+                assert.strictEqual( body , msg);
+                assert.strictEqual( res.statusCode, 400 );
+                //assert.equal( body.hasOwnProperty("email"), true );//for new user
+                //assert.equal( body.hasOwnProperty("id"), true );
+                //assert.equal( body.hasOwnProperty("phone"), true );
+                done();
+            });
+        });
         it('should success POST /api/signup empty data 400', function (done) {
             var data = {};
             request({
@@ -56,7 +61,7 @@ describe('UsersController', function() {
             }, function( error, res, body){
                 var msg = JSON.stringify( {detail:"User with this Email address already exists."} );
                 body = JSON.stringify(body);
-                assert.strictEqual( body , msg);
+                assert.strictEqual( body, msg);
                 assert.strictEqual( res.statusCode, 400 );
                 done();
             });
@@ -109,7 +114,7 @@ describe('UsersController', function() {
                 var msg = JSON.stringify( {password:["This field is required."]} );
                 body = JSON.stringify(body);
                 assert.strictEqual( body , msg);
-                //assert.strictEqual( res.statusCode, 401 );
+                assert.strictEqual( res.statusCode, 401 );
 
                 done();
             });
@@ -119,8 +124,8 @@ describe('UsersController', function() {
     describe('#login()', function() {
         it('should success POST /api/login data ok 200', function (done) {
             var data = {
-                email: "login1",
-                password: "login3"
+                email: "bbbb@bbbb.bbbb",
+                password: "bbbb"
             };
             request( {
                 url: loginURL,
@@ -130,7 +135,7 @@ describe('UsersController', function() {
                 var isHaveProperty =
                     body.hasOwnProperty("id") &&
                     body.hasOwnProperty("token");
-                assert.strictEqual( true , isHaveProperty);
+                assert.strictEqual( true, isHaveProperty);
                 assert.strictEqual( res.statusCode, 200 );
                 done();
             });
@@ -164,7 +169,8 @@ describe('UsersController', function() {
                 json: data
             }, function( error, res, body){
                 var msg = JSON.stringify( {
-                    detail: 'Authentication credentials were not provided.'
+                    password:["This field is required."],
+                    email:["This field is required."]
                 });
                 body = JSON.stringify( body );
                 assert.strictEqual( body, msg );

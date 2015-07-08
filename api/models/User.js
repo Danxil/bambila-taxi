@@ -20,7 +20,8 @@ module.exports = {
         },
         token: {
             type: 'string',
-            required: true
+            unique: true,
+            required: false//after login generate token
         }
     },
     validationMessages: { //hand for i18n & l10n
@@ -38,7 +39,6 @@ module.exports = {
             unique: "User with this phone number already exists."
         },
         token: {
-            required: "This field is required.",
             unique: "User with this token already exists."
         }
     }
