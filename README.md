@@ -17,6 +17,6 @@ Go To URL : http://Google.com
 PG DB
 psql -h bambilla.club -p 5432 -U rideshare  -d rideshare 
 
-rideshare password is 0U5ZqeMpUg8TduOA1zIT43ER
+rideshare password is sD4oFYeyWxF0zMj8Vmr2HtOA
 
 a [Sails](http://sailsjs.org) application
