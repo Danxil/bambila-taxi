@@ -4,4 +4,19 @@
 Прежде чем уходить после обновления сервера, несколько раз проверьте работоспособность своих изменений
 # nodejs_repo
 
+Credentials
+
+EMAIL SMTP LOGIN
+User ID : bambilla.club@gmail.com
+
+Password : vtMBiibF8N67zFgG86fqGQYqrJZFQFrt
+
+Go To URL : http://Google.com
+
+
+PG DB
+psql -h bambilla.club -p 5432 -U rideshare  -d rideshare 
+
+rideshare password is sD4oFYeyWxF0zMj8Vmr2HtOA
+
 a [Sails](http://sailsjs.org) application
