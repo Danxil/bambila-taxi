@@ -18,10 +18,19 @@ module.exports = {
             type: 'string',
             required: true
         },
-        token: {
+        token: {//session on login
             type: 'string',
             unique: true,
             required: false//after login generate token
+        },
+        code: {//verification email code
+            type: 'string',
+            unique: true
+            //required: true
+        },
+        active: {//user status, status == active -> after verification email
+            type: 'boolean',
+            required: false
         }
     },
     validationMessages: { //hand for i18n & l10n
@@ -35,11 +44,15 @@ module.exports = {
         },
         phone: {
             required: "This field is required.",
-            //phone : "This value does not match the required pattern.",//todo regexp
+            //phone : "This value does not match the required pattern.",//todo regexp pattern tel.
             unique: "User with this phone number already exists."
         },
         token: {
-            unique: "User with this token already exists."
+            unique: "User with this Token already exists."
+        },
+        code: {
+            required: "This field is required.",
+            unique: "User with this Code address already exists."
         }
     }
 };
