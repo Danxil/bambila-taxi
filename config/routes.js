@@ -24,5 +24,9 @@ module.exports.routes = {
   "get /api/users/me": {
     controller: "User",
     action: "getYourself"
+  },
+  "patch /api/users/me": {
+    controller: "User",
+    action: "patchYourself"
   }
 };

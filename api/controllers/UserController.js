@@ -15,13 +15,35 @@ module.exports = {
     verify: verify,
     login: login,
     findAll: findAll,
-    getYourself: getYourself
+    getYourself: getYourself,
+    patchYourself: patchYourself
 };
 
 
 // endpoints
 
 // TODO: Add global error handler  
+
+function patchYourself(req, res) {
+    var properties = ["first_name","middle_name",
+        "last_name", "address1", "address2",
+        "mobile2", "city", "postCode", "country"];
+
+    var data = {};
+    for(var p in req.body) {
+        if(req.body[p] && (req.body[p] !== 'empty')) {
+            data[p] = req.body[p];
+        }
+    }
+
+    User
+        .update(req.user.id, data)
+        .exec(function(err, models) {
+            if(err) return res.send(500, err);
+            res.send(models);
+        });
+
+}
 
 function getYourself(req, res) {
     res.send(req.user);
