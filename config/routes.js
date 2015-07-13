@@ -32,5 +32,9 @@ module.exports.routes = {
   "patch /api/users/me": {
     controller: "User",
     action: "patchYourself"
+  },
+  "get /api/users/ver": {
+    controller: "User",
+    action: "getVerificationData"
   }
 };

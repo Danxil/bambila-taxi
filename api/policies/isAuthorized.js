@@ -1,5 +1,3 @@
-// var UserController = require("../controllers/UserController.js");
-
 module.exports = function (req, res, next) {
   var token;
  
@@ -17,16 +15,14 @@ module.exports = function (req, res, next) {
     }
   } else if (req.param('token')) {
     token = req.param('token');
-    // We delete the token from param to not mess with blueprints
     delete req.query.token;
   } else {
     return res.json(401, {detail: 'No Authorization header was found.'});
   }
- 
-  console.log("User model", User);
+
 
   User.findOne({token: token}, function (err, data) {
-    if (err)  return res.send(err); // Write global error handler
+    if (err)  return res.send(err.message); // Write global error handler
     if(!data) return res.json(401, {detail: 'Invalid Token'});
 
     req.user = data;

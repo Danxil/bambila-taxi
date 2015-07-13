@@ -17,13 +17,25 @@ module.exports = {
     logout: logout,
     findAll: findAll,
     getYourself: getYourself,
-    patchYourself: patchYourself
+    patchYourself: patchYourself,
+    getVerificationData: getVerificationData
 };
 
 
 // endpoints
 
 // TODO: Add global error handler  
+
+function getVerificationData(req, res) {
+
+    Verification
+        .findOne({user: req.user.id})
+        .exec(function(err, data) {
+            if(err) return res.json(500, err.message);
+            res.send(data);
+        });
+
+}
 
 function patchYourself(req, res) {
     var properties = ["first_name","middle_name",
@@ -51,7 +63,8 @@ function getYourself(req, res) {
 }
 
 function findAll(req, res) {
-    User.find({})
+    User
+        .find({})
         .populate("user_pictures")
         .exec(function(err, data) {
             if (err) return console.log(err);
@@ -64,7 +77,7 @@ function logout(req, res) {
         .update(req.user.id, {token: null})
         .exec(function(err, models) {
             if(err) return res.send(500, err);
-            res.send({
+            res.json({
                 "success": "User logged out."
             });
         });
@@ -107,7 +120,7 @@ function login(req, res) {
         function(callback) {
             User.findOne(data)
                 .exec(function(err, model) {
-                    if (!model) callback(err, false);
+                    if (!model) return callback(err, false);
                     
                     callback(err, model);
                 });
@@ -263,10 +276,17 @@ function create(req, res) {
             User
                 .update(model.id, data)
                 .exec(function(err, models) {
+
+                    Verification.create({user: model.id})
+                        .exec(function() {
+                            // console.log(arguments)
+                        });
+
                     callback(err, models[0]);
                 });
         }
     ], function(err, user) {
+        if(err) return res.status(500).send(err.message);
         return res.status(201).json({
             email: user.email,
             phone: user.phone,
