@@ -15,6 +15,14 @@ module.exports.routes = {
   },
   "post /api/login": {
     controller: "User",
-    action: "find"
+    action: "login"
+  },
+  "get /api/users": { // for testing
+    controller: "User",
+    action: "findAll"
+  },
+  "get /api/users/me": {
+    controller: "User",
+    action: "getYourself"
   }
 };

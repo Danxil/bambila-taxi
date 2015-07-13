@@ -31,7 +31,61 @@ module.exports = {
         active: {//user status, status == active -> after verification email
             type: 'boolean',
             required: false
-        }
+        },
+        // not required parameters
+        first_name: {
+            type: 'string',
+            required: false
+        },
+        middle_name: {
+            type: 'string',
+            required: false
+        },
+        last_name: {
+            type: 'string',
+            required: false
+        },
+        address1: {
+            type: 'string',
+            required: false
+        },
+        address2: {
+            type: 'string',
+            required: false
+        },
+        mobile2: {
+            type: 'string',
+            required: false
+        },
+        city: {
+            type: 'String',
+            required: false
+        },
+        postCode: {
+            type: 'Number',
+            required: false
+        },
+        country: {
+            type: 'String',
+            required: false
+        },
+        driver_rating: {
+            type: 'Number'
+        },
+        client_rating: {
+            type: 'Number'
+        },
+        user_pictures: {
+            collection: 'userpic',
+            via: 'user' 
+        },
+        toJSON: function() {
+            var obj = this.toObject();
+            delete obj.password;
+            delete obj.token;
+            delete obj.code;
+            return obj;
+       }
     },
     validationMessages: { //hand for i18n & l10n
         email: {

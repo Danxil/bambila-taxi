@@ -1,12 +1,7 @@
 var nodemailer = require('nodemailer');
 
-var transporter = nodemailer.createTransport( {
-    transport: "SMTP",
-    host: "smtp.gmail.com",
-    secureConnection: false,
-    port: 587,
-    requiresAuth: true,
-    domains: ["gmail.com", "googlemail.com"],
+var transporter = nodemailer.createTransport({
+    service: 'Gmail',
     auth: {
         user: 'bambilla.club@gmail.com',
         pass: 'vtMBiibF8N67zFgG86fqGQYqrJZFQFrt'
@@ -24,7 +19,8 @@ function sendVerificatinCode ( email, verificatinCode, callback ){
         '<a href=' + link + '> Click here to verify </a></b>';
     var mailOptions = {
         from: '00000000000eger reg', // sender address
-        to: 'san4osq@ya.ru',         // list of receivers
+        // to: 'san4osq@ya.ru',         // list of receivers
+        to: email,
         subject: ' bambilla.club',   // Subject line
         text: '2222222222222222',    // plaintext body
         html: html // html body

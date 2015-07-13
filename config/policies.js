@@ -19,6 +19,14 @@
 
 module.exports.policies = {
 
+  'UserController': {
+    '*': 'isAuthorized',
+    'create': true,
+    'verify': true,
+    'login' : true,
+    'findAll': true
+  }
+
   /***************************************************************************
   *                                                                          *
   * Default policy for all controllers and actions (`true` allows public     *
