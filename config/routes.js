@@ -36,5 +36,9 @@ module.exports.routes = {
   "get /api/users/ver": {
     controller: "User",
     action: "getVerificationData"
+  },
+  "get /api/users/:id/vehicle_list": {
+    controller: "User",
+    action: "getVehicles"
   }
 };

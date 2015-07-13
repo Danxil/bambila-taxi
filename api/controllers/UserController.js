@@ -18,13 +18,28 @@ module.exports = {
     findAll: findAll,
     getYourself: getYourself,
     patchYourself: patchYourself,
-    getVerificationData: getVerificationData
+    getVerificationData: getVerificationData,
+    getVehicles: getVehicles
 };
 
 
 // endpoints
 
 // TODO: Add global error handler  
+
+function getVehicles(req, res) {
+
+    var id = (req.params.id == "me" ? req.user.id : req.params.id);
+
+    Vehicle
+        .find({user: id})
+        .populate("VehiclePhotos")
+        .populate("VehicleDocuments")
+        .exec(function(err, data) {
+            if(err) return res.json(500, err.message);
+            res.send(data);
+        });
+}
 
 function getVerificationData(req, res) {
 

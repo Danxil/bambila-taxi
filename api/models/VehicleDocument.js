@@ -6,7 +6,7 @@
 */
 
 module.exports = {
-  tableName: 'userpics',
+  tableName: 'vehicle_documents',
   schema: true,
 
   attributes: {
@@ -14,11 +14,8 @@ module.exports = {
   		type: 'String',
   		required: true
   	},
-  	user: {
-  		model: 'user',
-  	},
-  	category: {
-  		type: 'String'
+  	vehicle: {
+  		model: 'vehicle',
   	}
   }
 };
