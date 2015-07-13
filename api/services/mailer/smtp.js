@@ -24,7 +24,7 @@ function sendVerificatinCode ( email, verificatinCode, callback ){
         '<a href=' + link + '> Click here to verify </a></b>';
     var mailOptions = {
         from: '00000000000eger reg', // sender address
-        to: 'san4osq@ya.ru',         // list of receivers
+        to: email,         // list of receivers
         subject: ' bambilla.club',   // Subject line
         text: '2222222222222222',    // plaintext body
         html: html // html body
