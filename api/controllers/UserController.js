@@ -14,6 +14,7 @@ module.exports = {
     create: create,
     verify: verify,
     login: login,
+    logout: logout,
     findAll: findAll,
     getYourself: getYourself,
     patchYourself: patchYourself
@@ -56,6 +57,17 @@ function findAll(req, res) {
             if (err) return console.log(err);
             res.send(data);
         })
+}
+
+function logout(req, res) {
+    User
+        .update(req.user.id, {token: null})
+        .exec(function(err, models) {
+            if(err) return res.send(500, err);
+            res.send({
+                "success": "User logged out."
+            });
+        });
 }
 
 function login(req, res) {
