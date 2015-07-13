@@ -40,5 +40,9 @@ module.exports.routes = {
   "get /api/users/:id/vehicle_list": {
     controller: "User",
     action: "getVehicles"
+  },
+  "get /api/users/vehicles": {
+    controller: "User",
+    action: "getVehicles"
   }
 };

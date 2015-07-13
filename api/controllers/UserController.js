@@ -29,7 +29,8 @@ module.exports = {
 
 function getVehicles(req, res) {
 
-    var id = (req.params.id == "me" ? req.user.id : req.params.id);
+    var id = ((req.params.id == "me" || !req.params.id) 
+            ? req.user.id : req.params.id);
 
     Vehicle
         .find({user: id})
