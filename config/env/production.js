@@ -14,7 +14,10 @@ module.exports = {
     models: {
         connection: 'node_rideshare'
     },
-    port: 80
+    port: 80,
+    upload: {
+    	path: "/var/www/"
+    }
     // log: {
     //   level: "silent"
     // }

@@ -44,5 +44,17 @@ module.exports.routes = {
   "get /api/users/vehicles": {
     controller: "User",
     action: "getVehicles"
+  },
+  "get /api/users/me/info": {
+    controller: "User",
+    action: "getInfo"
+  },
+  "patch /api/users/me/info": {
+    controller: "User",
+    action: "patchInfo"
+  },
+  "post /api/users/me/info": {
+    controller: "User",
+    action: "patchInfo"
   }
 };

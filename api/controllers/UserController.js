@@ -19,13 +19,95 @@ module.exports = {
     getYourself: getYourself,
     patchYourself: patchYourself,
     getVerificationData: getVerificationData,
-    getVehicles: getVehicles
+    getVehicles: getVehicles,
+    getInfo: getInfo,
+    patchInfo: patchInfo
 };
 
 
 // endpoints
 
 // TODO: Add global error handler  
+
+function getInfo(req, res) {
+    var id = req.user.id;
+
+    UserInfo
+        .findOne({user: id})
+        .populate("interests")
+        .exec(function(err, data) {
+            if(err) return res.json(500, err.message);
+
+            data = data.toObject();
+            data.interests = _.map(data.interests, function(item) {
+                return item.value;
+            });
+
+            res.send(data);
+        })
+}
+
+function _updateInterests(interests, model, clb) {
+    if(!_.isArray(interests)) return;
+    if(!_.isArray(model.interests)) return;
+
+    // var existInterests = _.pluck(model.interests, 'value');
+    var existInterests = model.interests;
+    var user = model.user;
+
+    async.series([
+        function(clb) {
+            async.parallel(existInterests.map(function(item) {
+                return function(clb) {
+                    UserInfoInterest.destroy(item.id).exec(clb);
+                };
+            }), clb);
+        }, function(clb) {
+            async.parallel(interests.map(function(item) {
+                return function(clb) {
+                    UserInfoInterest.create({
+                        value: item,
+                        user: user
+                    }).exec(clb);
+                };
+            }), clb);
+        }
+        ], function(err) {
+            clb(err);
+        });
+
+}
+
+function patchInfo(req, res) {
+    var properties = ["birthday", "height", "nationality", 
+    "zodiac", "race", "gender", "language", "religion", 
+    "smoking", "marital", "orientation", "kids", "weight"];
+
+    var data = {};
+    for(var p in properties) {
+        if(req.body[p] && (req.body[p] !== 'empty')) {
+            data[p] = req.body[p];
+        }
+    }
+
+    var interests = req.body.interests;
+
+    async.waterfall([
+        function(clb) {
+            UserInfo
+                .findOne(req.user.id)
+                .populate("interests")
+                .exec(clb);
+        }, function(userinfo, clb) {
+            for(var p in data) {
+                userinfo[p] = data[p];
+            }
+            _updateInterests(interests, userinfo, clb);
+        }], function(err) {
+            if(err) return res.status(500).send(err.message);
+            getInfo(req, res);
+        });
+}
 
 function getVehicles(req, res) {
 
@@ -59,7 +141,7 @@ function patchYourself(req, res) {
         "mobile2", "city", "postCode", "country"];
 
     var data = {};
-    for(var p in req.body) {
+    for(var p in properties) {
         if(req.body[p] && (req.body[p] !== 'empty')) {
             data[p] = req.body[p];
         }
@@ -294,9 +376,10 @@ function create(req, res) {
                 .exec(function(err, models) {
 
                     Verification.create({user: model.id})
-                        .exec(function() {
-                            // console.log(arguments)
-                        });
+                        .exec(function() {});
+
+                    UserInfo.create({user: model.id})
+                        .exec(function() {});
 
                     callback(err, models[0]);
                 });
