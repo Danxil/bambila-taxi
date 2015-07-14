@@ -38,12 +38,12 @@ function getInfo(req, res) {
         .exec(function(err, data) {
             if(err) return res.json(500, err.message);
 
-            data = data.toObject();
+            data = _.clone(data);
             data.interests = _.map(data.interests, function(item) {
                 return item.value;
             });
 
-            res.send(data);
+            res.json(data);
         })
 }
 
