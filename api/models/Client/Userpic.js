@@ -18,7 +18,7 @@ module.exports = {
 			model: 'user'
 		},
 		category_id: {
-			type: "Number",
+			type: "Integer",
 			required: true
 		}
 	}

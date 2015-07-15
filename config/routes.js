@@ -53,6 +53,10 @@ module.exports.routes = {
     controller: "Driver/Vehicle",
     action: "destroyVehicle"
   },
+  "patch /api/users/vehicles/:vehicle_id": {
+    controller: "Driver/Vehicle",
+    action: "updateVehicle"
+  },
   "get /api/users/me/info": {
     controller: "Client/User",
     action: "getInfo"

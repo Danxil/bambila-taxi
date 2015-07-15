@@ -10,70 +10,58 @@ module.exports = {
             required: true
         },
         phone: {
-            type: 'string',
+            type: 'String',
             unique: true,
             required: true
         },
         password: {
-            type: 'string',
+            type: 'String',
             required: true
         },
         token: {//session on login
-            type: 'string',
-            unique: true,
-            required: false//after login generate token
+            type: 'String',
+            unique: true
         },
         code: {//verification email code
-            type: 'string',
+            type: 'String',
             unique: true
-            //required: true
         },
         active: {//user status, status == active -> after verification email
-            type: 'boolean',
-            required: false
+            type: 'boolean'
         },
         // not required parameters
         first_name: {
-            type: 'string',
-            required: false
+            type: 'String'
         },
         middle_name: {
-            type: 'string',
-            required: false
+            type: 'String'
         },
         last_name: {
-            type: 'string',
-            required: false
+            type: 'String'
         },
         address1: {
-            type: 'string',
-            required: false
+            type: 'String'
         },
         address2: {
-            type: 'string',
-            required: false
+            type: 'String'
         },
         mobile2: {
-            type: 'string',
-            required: false
+            type: 'String'
         },
         city: {
-            type: 'String',
-            required: false
+            type: 'String'
         },
         postCode: {
-            type: 'Number',
-            required: false
+            type: 'Integer'
         },
         country: {
-            type: 'String',
-            required: false
+            type: 'String'
         },
         driver_rating: {
-            type: 'Number'
+            type: 'Integer'
         },
         client_rating: {
-            type: 'Number'
+            type: 'Integer'
         },
         user_pictures: {
             collection: 'userpic',
@@ -99,7 +87,7 @@ module.exports = {
         phone: {
             required: "This field is required.",
             //phone : "This value does not match the required pattern.",//todo regexp pattern tel.
-            unique: "User with this phone number already exists."
+            unique: "User with this phone Integer already exists."
         },
         token: {
             unique: "User with this Token already exists."

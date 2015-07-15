@@ -8,9 +8,25 @@
 module.exports = {
     setVehicle: setVehicle,
     getVehicles: getVehicles,
-    destroyVehicle: destroyVehicle
+    destroyVehicle: destroyVehicle,
+    updateVehicle: updateVehicle
 };
 
+
+function updateVehicle( req, res ){
+    Vehicle
+        .update(req.param("vehicle_id"), req.allParams() )
+        .exec(function(err, models) {
+            if(err) return res.status(404).json({
+                "detail":"Not found."
+            });
+
+            models[0].VehicleDocument = [];//todo VehicleDocument from DB
+            models[0].VehiclePhoto = [];//todo VehiclePhoto from DB
+
+            res.status(200).json(models[0]);
+        })
+}
 
 function destroyVehicle( req, res ){
     //only for vehicle owner!
@@ -18,8 +34,6 @@ function destroyVehicle( req, res ){
     Vehicle
         .destroy({id: req.param("vehicle_id")})
         .exec(function(err, vehicle){
-            console.log(err)
-            console.log(vehicle.length)
             if(!err && vehicle.length === 1 ){
                 res.status(204).end()
             }
@@ -30,6 +44,7 @@ function destroyVehicle( req, res ){
             }
         });
 }
+
 function setVehicle( req, res ) {
 
     Vehicle
@@ -56,24 +71,19 @@ function setVehicle( req, res ) {
             //console.log("documents", documents)
             //console.log("photos", photos)
 
-            vehicle.VehicleDocument = [];
-            vehicle.VehiclePhoto = [];
-
-            delete vehicle.updatedAt;
-            delete vehicle.createdAt;
+            vehicle.VehicleDocument = [];//todo VehicleDocument from DB
+            vehicle.VehiclePhoto = [];//todo VehiclePhoto from DB
 
             return [vehicle];
         })
         .spread(function(vehicle){
-            console.log("vehicle", vehicle)
-
             res.status(200).json(vehicle)
         })
         .catch(function(err){
-            console.error(err);
             res.status(400).json({err:err.message})
         });
 }
+
 function getVehicles(req, res) {
 
     var id = ((req.params.id == "me" || !req.params.id)
