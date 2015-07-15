@@ -49,6 +49,10 @@ module.exports.routes = {
     controller: "Driver/Vehicle",
     action: "setVehicle"
   },
+  "delete /api/users/vehicles/:vehicle_id": {
+    controller: "Driver/Vehicle",
+    action: "destroyVehicle"
+  },
   "get /api/users/me/info": {
     controller: "Client/User",
     action: "getInfo"

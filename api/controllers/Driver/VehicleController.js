@@ -7,9 +7,29 @@
 
 module.exports = {
     setVehicle: setVehicle,
-    getVehicles: getVehicles
+    getVehicles: getVehicles,
+    destroyVehicle: destroyVehicle
 };
 
+
+function destroyVehicle( req, res ){
+    //only for vehicle owner!
+
+    Vehicle
+        .destroy({id: req.param("vehicle_id")})
+        .exec(function(err, vehicle){
+            console.log(err)
+            console.log(vehicle.length)
+            if(!err && vehicle.length === 1 ){
+                res.status(204).end()
+            }
+            else {
+                res.status(404).json({
+                    "detail":"Not found."
+                })
+            }
+        });
+}
 function setVehicle( req, res ) {
 
     Vehicle
