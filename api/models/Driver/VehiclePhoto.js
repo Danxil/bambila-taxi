@@ -6,7 +6,7 @@
 */
 
 module.exports = {
-  tableName: 'vehicle_documents',
+  tableName: 'vehicle_photos',
   schema: true,
 
   attributes: {
@@ -15,7 +15,7 @@ module.exports = {
   		required: true
   	},
   	vehicle: {
-  		model: 'vehicle',
+  		model: 'vehicle'
   	}
   }
 };

@@ -4,10 +4,10 @@
  * @description :: Server-side logic for managing users
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
-var utils = require("../../utils/utils");
+var utils = require("../../../utils/utils");
 var token = require("hat");
 var bcrypt = require("bcrypt");
-var smtp = require("../services/mailer/smtp");
+var smtp = require("../../services/mailer/smtp");
 var isEmptyObject = utils.isEmptyObject;
 
 module.exports = {
@@ -19,7 +19,6 @@ module.exports = {
     getYourself: getYourself,
     patchYourself: patchYourself,
     getVerificationData: getVerificationData,
-    getVehicles: getVehicles,
     getInfo: getInfo,
     patchInfo: patchInfo
 };
@@ -109,21 +108,6 @@ function patchInfo(req, res) {
         });
 }
 
-function getVehicles(req, res) {
-
-    var id = ((req.params.id == "me" || !req.params.id) 
-            ? req.user.id : req.params.id);
-
-    Vehicle
-        .find({user: id})
-        .populate("VehiclePhotos")
-        .populate("VehicleDocuments")
-        .exec(function(err, data) {
-            if(err) return res.json(500, err.message);
-            res.send(data);
-        });
-}
-
 function getVerificationData(req, res) {
 
     Verification
@@ -184,8 +168,8 @@ function logout(req, res) {
 function login(req, res) {
     var data = req.body;
 
-    if ((!data.hasOwnProperty("email") || data.email === "") && 
-        (!data.hasOwnProperty("password") || data.password === "")) {
+    if (( !data.hasOwnProperty("email") || !data.email ) &&
+        ( !data.hasOwnProperty("password") || !data.password )) {
         return res.status(400).json({
             "email": [
                 "This field is required."
@@ -195,14 +179,14 @@ function login(req, res) {
             ]
         });
     }
-    if (!data.hasOwnProperty("email") || data.email === "") {
+    if (!data.hasOwnProperty("email") || !data.email ) {
         return res.status(400).json({
             "email": [
                 "This field is required."
             ]
         });
     }
-    if (!data.hasOwnProperty("password") || data.password === "") {
+    if (!data.hasOwnProperty("password") || !data.password ) {
         return res.status(400).json({
             "password": [
                 "This field is required."

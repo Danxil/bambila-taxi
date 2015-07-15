@@ -16,15 +16,18 @@ module.exports = {
         vehicle_type: "String",
         brand: "String",
         model: "String",
-        regNumber: "Number",
+        regNumber: {
+            type: 'String',
+            unique: true
+        },
         regDate: "Date",
-		seats: "Number",
+		seats: "Integer",
         VehiclePhotos: {
         	collection: 'VehiclePhoto',
             via: 'vehicle' 
         },
         VehicleDocuments: {
-        	collection: 'vehicleDocument',
+        	collection: 'VehicleDocument',
             via: 'vehicle' 
         }
     }

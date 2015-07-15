@@ -6,55 +6,59 @@ module.exports.routes = {
     view: "homepage"
   },
   "post /api/signup": {
-    controller: "User",
+    controller: "Client/User",
     action: "create"
   },
   "get /api/signup/verify": {
-    controller: "User",
+    controller: "Client/User",
     action: "verify"
   },
   "post /api/login": {
-    controller: "User",
+    controller: "Client/User",
     action: "login"
   },
   "get /api/logout": {
-    controller: "User",
+    controller: "Client/User",
     action: "logout"
   },
   "get /api/users": { // for testing
-    controller: "User",
+    controller: "Client/User",
     action: "findAll"
   },
   "get /api/users/me": {
-    controller: "User",
+    controller: "Client/User",
     action: "getYourself"
   },
   "patch /api/users/me": {
-    controller: "User",
+    controller: "Client/User",
     action: "patchYourself"
   },
   "get /api/users/ver": {
-    controller: "User",
+    controller: "Client/User",
     action: "getVerificationData"
   },
   "get /api/users/:id/vehicle_list": {
-    controller: "User",
+    controller: "Driver/Vehicle",
     action: "getVehicles"
   },
   "get /api/users/vehicles": {
-    controller: "User",
+    controller: "Driver/Vehicle",
     action: "getVehicles"
   },
+  "post /api/users/vehicles": {
+    controller: "Driver/Vehicle",
+    action: "setVehicle"
+  },
   "get /api/users/me/info": {
-    controller: "User",
+    controller: "Client/User",
     action: "getInfo"
   },
   "patch /api/users/me/info": {
-    controller: "User",
+    controller: "Client/User",
     action: "patchInfo"
   },
   "post /api/users/me/info": {
-    controller: "User",
+    controller: "Client/User",
     action: "patchInfo"
   }
 };
