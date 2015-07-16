@@ -1,6 +1,6 @@
 module.exports = directories =  {
 
-    rootDir: "media/bambilla_image_storage/",
+    rootDir: "/home/bambilla/media/bambilla_image_storage/",
 
     photos: function(){
         return this.rootDir + "photos"
