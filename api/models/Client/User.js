@@ -67,7 +67,7 @@ module.exports = {
         phone: {
             required: "This field is required.",
             //phone : "This value does not match the required pattern.",//todo regexp pattern tel.
-            unique: "User with this phone Integer already exists."
+            unique: "User with this phone number already exists."
         },
         token: {
             unique: "User with this Token already exists."

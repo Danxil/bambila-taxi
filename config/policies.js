@@ -19,7 +19,7 @@
 
 module.exports.policies = {
 
-  'UserController': {
+  'Client/UserController': {
     '*': 'isAuthorized',
     'create': true,
     'verify': true,
