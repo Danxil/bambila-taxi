@@ -18,7 +18,9 @@ module.exports = {
             type: 'String',
             required: true
         },
-        token: {//session on login
+
+        // not required parameters
+        token: {//session on login//todo token implement to REDIS DB
             type: 'String',
             unique: true
         },
@@ -29,40 +31,18 @@ module.exports = {
         active: {//user status, status == active -> after verification email
             type: 'boolean'
         },
-        // not required parameters
-        first_name: {
-            type: 'String'
-        },
-        middle_name: {
-            type: 'String'
-        },
-        last_name: {
-            type: 'String'
-        },
-        address1: {
-            type: 'String'
-        },
-        address2: {
-            type: 'String'
-        },
-        mobile2: {
-            type: 'String'
-        },
-        city: {
-            type: 'String'
-        },
-        postCode: {
-            type: 'Integer'
-        },
-        country: {
-            type: 'String'
-        },
-        driver_rating: {
-            type: 'Integer'
-        },
-        client_rating: {
-            type: 'Integer'
-        },
+        first_name: 'String',
+        middle_name: 'String',
+        last_name: 'String',
+        address1: 'String',
+        address2: 'String',
+        mobile2: 'String',
+        city: 'String',
+        postCode: 'Integer',
+        country: 'String',
+        driver_rating: 'Integer',
+        client_rating: 'Integer',
+
         user_pictures: {
             collection: 'userpic',
             via: 'user' 

@@ -1,5 +1,5 @@
 /**
-* Userpics.js
+* VehicleDocument.js
 *
 * @description :: User pictures
 * @docs        :: http://sailsjs.org/#!documentation/models

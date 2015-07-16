@@ -1,5 +1,5 @@
 /**
-* Userpics.js
+* VehiclePhoto.js
 *
 * @description :: User pictures
 * @docs        :: http://sailsjs.org/#!documentation/models
@@ -11,7 +11,7 @@ module.exports = {
 
   attributes: {
   	image: {
-  		type: 'String',
+  		type: 'String',//url
   		required: true
   	},
   	vehicle: {

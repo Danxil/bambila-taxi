@@ -4,14 +4,68 @@
  * @description :: Server-side logic for managing vehicles
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
+var fs = require('fs');
+var DP = require("../../../utils/directoryPartition");
 
 module.exports = {
     setVehicle: setVehicle,
     getVehicles: getVehicles,
     destroyVehicle: destroyVehicle,
-    updateVehicle: updateVehicle
+    updateVehicle: updateVehicle,
+    setFile: setFile
 };
 
+
+function setFile( req, res ){
+    //photo, vehicle
+    //document, vehicle
+
+    var type = req.url.split("/")[5];//photo or document
+
+    async.waterfall([
+        function( callback ) {
+            req.file('image').upload( callback );
+        },
+        function( files, callback) {
+            for ( var i = 0; i < files.length; i++ ){//images count
+                DP.createInMediaDirectory( type, files, i, callback );//return oldName, newName
+            }
+        },
+        function( oldName, newName, callback ) {
+            fs.rename( oldName, newName, function( err ){//move image to new path
+                callback( err, newName );
+            });
+        },
+        function( newName, callback ) {
+            if( type === "photo" ){
+                VehiclePhoto
+                    .create( {
+                        image: newName,
+                        vehicle: req.param("vehicle")
+                    })
+                    .exec( callback );
+            }
+            else if( type === "document" ){
+                VehicleDocument
+                .create( {
+                    image: newName,
+                    vehicle: req.param("vehicle")
+                })
+                .exec( callback );
+            }
+            else {
+                callback("undefined type");
+            }
+        }
+    ], function ( err, photo ) {
+        if( !err ){
+            res.status(200).json(photo)
+        }
+        else {
+            res.status(500).json(photo)
+        }
+    });
+}
 
 function updateVehicle( req, res ){
     Vehicle
