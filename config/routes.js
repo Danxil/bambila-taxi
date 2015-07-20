@@ -49,6 +49,10 @@ module.exports.routes = {
         controller: "Client/User",
         action: "patchInfo"
     },
+    "post /api/users/userpicture": {
+        controller: "Client/User",
+        action: "setUserpic"
+    },
 
 
     "get /api/users/:id/vehicle_list": {

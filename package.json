@@ -27,7 +27,7 @@
     "nodemailer": "^1.4.0",
     "rc": "~0.5.0",
     "request": "^2.58.0",
-    "sails": "~0.11.0",
+    "sails": "^0.11.0",
     "sails-disk": "~0.10.0",
     "sails-hook-validation": "^0.4.0",
     "sails-postgresql": "^0.10.15",
@@ -48,6 +48,7 @@
   "license": "",
   "devDependencies": {
     "sails-test-helper": "^0.4.4",
-    "supertest": "^1.0.1"
+    "supertest": "^1.0.1",
+    "vow": "^0.4.10"
   }
 }

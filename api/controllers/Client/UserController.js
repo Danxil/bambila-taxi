@@ -7,6 +7,7 @@
 var utils = require("../../../utils/utils");
 var token = require("hat");
 var bcrypt = require("bcrypt");
+var vow = require("vow");
 var smtp = require("../../services/mailer/smtp");
 var isEmptyObject = utils.isEmptyObject;
 
@@ -20,7 +21,8 @@ module.exports = {
     patchYourself: patchYourself,
     getVerificationData: getVerificationData,
     getInfo: getInfo,
-    patchInfo: patchInfo
+    patchInfo: patchInfo,
+    setUserpic: setUserpic
 };
 
 
@@ -502,6 +504,43 @@ function userCreateValidateMsg(err, callback) {
             });
         }
     }
+}
+
+function setUserpic(req, res) {
+    var id = req.user.id;
+
+    var properties = [
+        "face",
+        "passport",
+        "facepassport",
+        "driverLicense",
+        "criminalBackground"
+    ]
+
+    var defArr = []
+
+    properties.forEach(function(item) {
+        if (!req.file(item)._readableState.length)
+            return
+
+        var def = vow.defer()
+        console.log(req.file(item)._files[0].stream.byteCount)
+        req.file(item).upload(function (err, uploadedFiles) {
+            console.log(11)
+            console.log(err)
+            console.log(uploadedFiles)
+            if (err)
+                return def.reject()
+            def.resolve(uploadedFiles)
+        })
+
+        vow.all(defArr, function() {
+            Userpics.createUserpic()
+            //req.user.user_pictures.add()
+        })
+    })
+
+    res.send(201)
 }
 
 

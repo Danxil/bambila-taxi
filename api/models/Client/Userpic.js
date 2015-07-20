@@ -21,5 +21,8 @@ module.exports = {
 			type: "Integer",
 			required: true
 		}
+	},
+	createUserpic: function(attrs) {
+		console.log(this)
 	}
 };

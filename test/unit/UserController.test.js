@@ -1,12 +1,17 @@
 
 require("sails-test-helper");
-var request = require('request');
-var assert = require('assert');
+var supertest = require('supertest')('http://localhost:1337')
+var request = require('request')
+var assert = require('assert')
+var fs = require('fs')
+var path = require('path')
 
 var signupURL = "http://localhost:1337/api/signup";
 var loginURL = "http://localhost:1337/api/login";
-describe('UsersController', function() {
+var getUsersAllURL = "http://localhost:1337/api/users";
 
+describe('UsersController', function() {
+    /*
     describe('#signup()', function() {
         it('should success POST /api/signup user exist', function (done) {
             var data = {
@@ -179,5 +184,44 @@ describe('UsersController', function() {
             });
         });
     });
+
+    describe('#get()', function(done) {
+
+        it('should success GET /api/users data ok 200', function (done) {
+            request({
+                url: getUsersAllURL,
+                method: "get",
+            }, function (error, res, body) {
+                if (error)
+                    return done(error)
+
+                done();
+            });
+        })
+    })
+    */
+    describe('#userpic()', function(done) {
+        it('should success POST /api/users/userpicture data ok 200', function(done) {
+            var url = '/api/users/userpicture'
+            var image = process.cwd() + '/test/unit/test.jpg'
+
+            var req = supertest
+                .post(url)
+                .set('Authorization', 'Token bfdc33dd38bee03704442723ae17b023')
+                .attach('face', image)
+
+            req.end(function(err, res) {
+                if (err)
+                    return done(err)
+
+                var bodyIsTrue = res.body.id && res.body.category && res.body.image
+
+                assert.strictEqual(res.statusCode, 201);
+                assert.strictEqual(bodyIsTrue, true);
+
+                done()
+            });
+        })
+    })
 });
 
