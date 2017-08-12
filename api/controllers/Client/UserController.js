@@ -279,15 +279,10 @@ function verify(req, res) {
             callback(null, model, data);
         },
         function(model, data, callback) {
-            console.log("model.code1", model.code);
             User
                 .update(code, data)
                 .exec(function(err, models) {
                     console.log("err", err);
-                    console.log("model", model);
-                    console.log("model.code2", model.code);
-                    console.log("models", models);
-                    console.log("data", data);
                     callback(err, models);
                 });
         }
